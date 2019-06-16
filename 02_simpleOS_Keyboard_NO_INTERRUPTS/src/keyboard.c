@@ -105,8 +105,7 @@ void keyboard_wait (void) {
         // see also; http://www.linux.or.jp/JF/JFdocs/IO-Port-Programming/
         // high-resolution.html#AEN160.; cpu, delay, io]
         //
-        // asm ("outb %al, $0x80");
-        outb (100, 0x80);
+        asm volatile ("outb %al, $0x80");
     }
 }
 
