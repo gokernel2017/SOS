@@ -70,7 +70,6 @@ int GetCommandLine (char *string, int len) {
 
 void kernel_main_loop (void) {
 
-
     puts ("\nKeyboard loop example ... NO INTERRUPTS\n");
     puts ("To exit type: 'quit'\n");
     puts (SHELL_PROMPT);
