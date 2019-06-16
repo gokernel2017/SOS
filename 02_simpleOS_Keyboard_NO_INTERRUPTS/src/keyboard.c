@@ -106,7 +106,7 @@ void keyboard_wait (void) {
         // high-resolution.html#AEN160.; cpu, delay, io]
         //
         // asm ("outb %al, $0x80");
-				outb (100, 0x80);
+        outb (100, 0x80);
     }
 }
 
