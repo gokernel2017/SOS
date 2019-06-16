@@ -1,0 +1,45 @@
+#------------------------------------------------
+#
+# Project: Simple Operating System
+#
+#------------------------------------------------
+#
+
+CC = gcc
+LD = ld
+OBJCOPY = objcopy
+RM = rm -f
+
+OBJ         = obj/boot.o obj/libc.o obj/kernel.o
+BIN         = obj/kernel.bin
+KERNEL_NAME = simpleOS_kernel
+
+ifeq ($(OS),Windows_NT)
+CFLAGS = -m32 -s -O2 -U_WIN32 -Wall -nostdinc -fno-exceptions -nostartfiles -ffreestanding -fno-builtin
+else
+CFLAGS = -m32 -O2 -Wall -nostdlib -nostdinc
+endif
+
+LDFLAGS = -T src/link.ld -nostdlib
+
+.PHONY: all all-before all-after clean clean-custom
+
+all: $(KERNEL_NAME)
+
+clean: clean-custom
+	${RM} $(OBJ) $(BIN) $(KERNEL_NAME)
+
+#################################################
+$(KERNEL_NAME): $(OBJ)
+	$(LD) $(LDFLAGS) $(OBJ) -o $(BIN)
+	$(OBJCOPY) -O binary $(BIN) $(KERNEL_NAME)
+#################################################
+
+obj/boot.o: src/boot.S
+	$(CC) -c src/boot.S -o obj/boot.o $(CFLAGS)
+
+obj/libc.o: src/libc.c
+	$(CC) -c src/libc.c -o obj/libc.o $(CFLAGS)
+
+obj/kernel.o: src/kernel.c
+	$(CC) -c src/kernel.c -o obj/kernel.o $(CFLAGS)
