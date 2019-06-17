@@ -19,7 +19,7 @@
 
  TO TEST WITH GRUB( 1.x ):
  ----------------------------
- title GARDEN OS
+ title SIMPLE OS
    kernel /simpleOS_kernel
  ----------------------------
 

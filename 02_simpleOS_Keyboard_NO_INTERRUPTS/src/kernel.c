@@ -78,7 +78,7 @@ void kernel_main_loop (void) {
 
         keyboard_wait ();
 
-        switch (GetCommandLine(string_command, sizeof(string_command))) {
+        switch (GetCommandLine(string_command, sizeof(string_command)-1 )) {
         case KEY_ENTER:
             if (!strcmp(string_command, "quit")) {
                 puts ("\n");

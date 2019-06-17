@@ -14,12 +14,7 @@ OBJ         = obj/boot.o obj/libc.o obj/keyboard.o obj/kernel.o
 BIN         = obj/kernel.bin
 KERNEL_NAME = simpleOS_kernel
 
-ifeq ($(OS),Windows_NT)
 CFLAGS = -m32 -s -O2 -U_WIN32 -Wall -nostdinc -fno-exceptions -nostartfiles -ffreestanding -fno-builtin
-else
-CFLAGS = -m32 -O2 -Wall -nostdlib -nostdinc
-endif
-
 LDFLAGS = -T src/link.ld -nostdlib
 
 .PHONY: all all-before all-after clean clean-custom
