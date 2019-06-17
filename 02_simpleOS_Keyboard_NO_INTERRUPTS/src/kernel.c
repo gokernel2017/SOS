@@ -17,10 +17,11 @@
 //
 #include "simple.h"
 
+#define STR_CMD_SIZE    255
 #define SHELL_PROMPT    "\nshell > "
 
 static char
-    string_command [100]
+    string_command [ STR_CMD_SIZE + 1 ]
     ;
 
 int kernel_init (struct multiboot_info * mbi) {
@@ -40,8 +41,6 @@ int GetCommandLine (char *string, int len) {
     k = keyboard_getkey ();
 
     if (k > 0) {
-        char buf [10] = { 0 };
-
         if (k == KEY_ENTER) {
             string [pos] = 0;
             pos = 0;
@@ -56,6 +55,7 @@ int GetCommandLine (char *string, int len) {
             return k;
 
         } else if (pos < len && (k >= KEY_SPACE && k <= 126)) { //  126 = ( ~ )
+            char buf [5] = { 0, 0, 0, 0 };
             string [pos++] = k;
             buf [0] = k;
             buf [1] = 0;
@@ -66,7 +66,8 @@ int GetCommandLine (char *string, int len) {
     }
 
     return 0;
-}
+
+}// GetCommandLine()
 
 void kernel_main_loop (void) {
 
@@ -78,7 +79,7 @@ void kernel_main_loop (void) {
 
         keyboard_wait ();
 
-        switch (GetCommandLine(string_command, sizeof(string_command)-1 )) {
+        switch (GetCommandLine(string_command, STR_CMD_SIZE)) {
         case KEY_ENTER:
             if (!strcmp(string_command, "quit")) {
                 puts ("\n");
@@ -87,9 +88,11 @@ void kernel_main_loop (void) {
             puts("\nCommand Not Found: '"); puts(string_command); puts("'");
             puts (SHELL_PROMPT);
             break;
-        }
-    }
-}
+        }// switch (GetCommandLine(...))
+
+    }// for (;;)
+
+}// kernel_main_loop()
 
 void kernel_main (struct multiboot_info * mbi) {
     if (!kernel_init(mbi))
